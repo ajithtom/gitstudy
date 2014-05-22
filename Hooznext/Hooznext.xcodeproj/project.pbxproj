@@ -10,13 +10,13 @@
 		F81EB32A192A8B9900EEAC61 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = F81EB326192A8B9900EEAC61 /* LICENSE.txt */; };
 		F81EB32B192A8B9900EEAC61 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F81EB327192A8B9900EEAC61 /* README.md */; };
 		F81EB32C192A8B9900EEAC61 /* MGInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = F81EB329192A8B9900EEAC61 /* MGInstagram.m */; };
-		F81EB32E192A8CD100EEAC61 /* toshare.png in Resources */ = {isa = PBXBuildFile; fileRef = F81EB32D192A8CD100EEAC61 /* toshare.png */; };
 		F81EB330192A8D4900EEAC61 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F81EB32F192A8D4900EEAC61 /* Social.framework */; };
 		F81EB332192A905500EEAC61 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F81EB331192A905500EEAC61 /* Twitter.framework */; };
 		F8468B9C1929320E00E36490 /* selectedCell.png in Resources */ = {isa = PBXBuildFile; fileRef = F8468B9B1929320E00E36490 /* selectedCell.png */; };
 		F8A7A06E1929D8670008A00C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8A7A06D1929D8670008A00C /* AssetsLibrary.framework */; };
 		F8A7A0731929DB130008A00C /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A7A0701929DB130008A00C /* 37x-Checkmark.png */; };
 		F8A7A0741929DB130008A00C /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A7A0721929DB130008A00C /* MBProgressHUD.m */; };
+		F8D0CC76192E28C900608E63 /* hooz_logo_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = F8D0CC75192E28C900608E63 /* hooz_logo_shadow.png */; };
 		F8DDC8E6192892780076F921 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DDC8E5192892780076F921 /* Foundation.framework */; };
 		F8DDC8E8192892780076F921 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DDC8E7192892780076F921 /* CoreGraphics.framework */; };
 		F8DDC8EA192892780076F921 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DDC8E9192892780076F921 /* UIKit.framework */; };
@@ -63,7 +63,6 @@
 		F81EB327192A8B9900EEAC61 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		F81EB328192A8B9900EEAC61 /* MGInstagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGInstagram.h; sourceTree = "<group>"; };
 		F81EB329192A8B9900EEAC61 /* MGInstagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGInstagram.m; sourceTree = "<group>"; };
-		F81EB32D192A8CD100EEAC61 /* toshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toshare.png; sourceTree = "<group>"; };
 		F81EB32F192A8D4900EEAC61 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		F81EB331192A905500EEAC61 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F8468B9B1929320E00E36490 /* selectedCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectedCell.png; sourceTree = "<group>"; };
@@ -80,6 +79,7 @@
 		F8A7A07B1929DDFD0008A00C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		F8A7A07C1929DE0A0008A00C /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default~iphone.png"; sourceTree = "<group>"; };
 		F8A7A07D1929DE1A0008A00C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		F8D0CC75192E28C900608E63 /* hooz_logo_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hooz_logo_shadow.png; sourceTree = "<group>"; };
 		F8DDC8E2192892780076F921 /* Hooznext.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hooznext.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8DDC8E5192892780076F921 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F8DDC8E7192892780076F921 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -216,7 +216,6 @@
 				F8DDC8F7192892780076F921 /* Main.storyboard */,
 				F8DDC8FA192892780076F921 /* ViewController.h */,
 				F8DDC8FB192892780076F921 /* ViewController.m */,
-				F81EB32D192A8CD100EEAC61 /* toshare.png */,
 				F8DDC8FD192892780076F921 /* Images.xcassets */,
 				F8DDC8EC192892780076F921 /* Supporting Files */,
 			);
@@ -264,6 +263,7 @@
 				F8DDC91F192893440076F921 /* facebook_icon.png */,
 				F8DDC920192893440076F921 /* fav_clubteam.png */,
 				F8DDC921192893440076F921 /* hooz_logo.png */,
+				F8D0CC75192E28C900608E63 /* hooz_logo_shadow.png */,
 				F8DDC922192893440076F921 /* instagram_icon.png */,
 				F8DDC923192893440076F921 /* red_hooz_bottom.png */,
 				F8DDC924192893440076F921 /* share.png */,
@@ -359,6 +359,7 @@
 				F8A7A0731929DB130008A00C /* 37x-Checkmark.png in Resources */,
 				F8DDC929192893440076F921 /* choose_country.png in Resources */,
 				F81EB32A192A8B9900EEAC61 /* LICENSE.txt in Resources */,
+				F8D0CC76192E28C900608E63 /* hooz_logo_shadow.png in Resources */,
 				F8DDC92C192893440076F921 /* fav_clubteam.png in Resources */,
 				F8DDC92A192893440076F921 /* confirm_timezone.png in Resources */,
 				F8DDC930192893440076F921 /* share.png in Resources */,
@@ -370,7 +371,6 @@
 				F8DDC92D192893440076F921 /* hooz_logo.png in Resources */,
 				F8DDC931192893440076F921 /* star_selected.png in Resources */,
 				F8DDC936192895750076F921 /* BlaxSlabXXL.ttf in Resources */,
-				F81EB32E192A8CD100EEAC61 /* toshare.png in Resources */,
 				F8DDC93819289D990076F921 /* teamsList.plist in Resources */,
 				F8DDC8F9192892780076F921 /* Main.storyboard in Resources */,
 				F81EB32B192A8B9900EEAC61 /* README.md in Resources */,
@@ -463,7 +463,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Creace Technologies Pvt Ltd (2Z3S6NZZT4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Creace Technologies Pvt Ltd (2Z3S6NZZT4)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -481,6 +482,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "B799F7D0-F2D8-4F8A-A8EB-652A612FF0C0";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -501,7 +503,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Creace Technologies Pvt Ltd (2Z3S6NZZT4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Creace Technologies Pvt Ltd (2Z3S6NZZT4)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -512,6 +515,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PROVISIONING_PROFILE = "B799F7D0-F2D8-4F8A-A8EB-652A612FF0C0";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -522,11 +526,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Creace Technologies Pvt Ltd (2Z3S6NZZT4)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hooznext/Hooznext-Prefix.pch";
 				INFOPLIST_FILE = "Hooznext/Hooznext-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "B799F7D0-F2D8-4F8A-A8EB-652A612FF0C0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -536,11 +542,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Creace Technologies Pvt Ltd (2Z3S6NZZT4)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hooznext/Hooznext-Prefix.pch";
 				INFOPLIST_FILE = "Hooznext/Hooznext-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "B799F7D0-F2D8-4F8A-A8EB-652A612FF0C0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -549,6 +557,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hooznext.app/Hooznext";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Creace Technologies Pvt Ltd (2Z3S6NZZT4)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -562,6 +571,7 @@
 				);
 				INFOPLIST_FILE = "HooznextTests/HooznextTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "B799F7D0-F2D8-4F8A-A8EB-652A612FF0C0";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -571,6 +581,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hooznext.app/Hooznext";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Creace Technologies Pvt Ltd (2Z3S6NZZT4)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -580,6 +591,7 @@
 				GCC_PREFIX_HEADER = "Hooznext/Hooznext-Prefix.pch";
 				INFOPLIST_FILE = "HooznextTests/HooznextTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "B799F7D0-F2D8-4F8A-A8EB-652A612FF0C0";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
