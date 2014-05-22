@@ -10,12 +10,20 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "MBProgressHUD.h"
 
+#define CacheDirectory [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]
+
+#define maxWidth [[UIScreen mainScreen] bounds].size.width
+#define maxHeight [[UIScreen mainScreen] bounds].size.height
+#define screenScale  [[UIScreen mainScreen] scale]
+
 @interface ViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIPickerViewDataSource,UIPickerViewDelegate,UIGestureRecognizerDelegate>{
     NSMutableArray *teamsArray;
     
-    NSArray *timeZonesNames;
+    NSMutableArray *timeZonesDicts;
     
-    NSString *timeZone;
+    NSArray *blackList;
+    
+    NSMutableDictionary *timeZone;
     
     UIPickerView *pickerView;
     

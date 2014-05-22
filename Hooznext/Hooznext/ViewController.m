@@ -31,29 +31,94 @@
     
     NSString *path=[[NSBundle mainBundle] pathForResource:@"teamsList" ofType:@"plist"];
     
-    teamsArray=[[NSMutableArray alloc]initWithContentsOfFile:path];
+    teamsArray=[[NSMutableArray alloc]init];
     
-    timeZonesNames = [NSTimeZone knownTimeZoneNames] ;
+    NSMutableArray *unsortedList=[[NSMutableArray alloc]initWithContentsOfFile:path];
     
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name"  ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    teamsArray=(NSMutableArray *)[unsortedList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+    
+    
+    timeZonesDicts=[[NSMutableArray alloc]init];
+    //timeZonesNames = [NSTimeZone knownTimeZoneNames] ;
+    
+//    NSTimeZone *currentTimeZone =[NSTimeZone timeZoneWithName:[timeZonesNames objectAtIndex:row]];
+//    
+//    NSInteger currentGMTOffset = [currentTimeZone secondsFromGMT];
+//    
+//    NSTimeZone *utcTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+//    
+//    NSInteger gmtOffset = [utcTimeZone secondsFromGMT];
+//    
+//    NSTimeInterval gmtInterval = currentGMTOffset - gmtOffset;
+    
+    NSArray *availTimeZones = [NSTimeZone knownTimeZoneNames];
+    
+    NSMutableArray *unsortTimeZones=[[NSMutableArray alloc]init];
+    
+    
+    blackList=[[NSArray alloc]initWithObjects:@"GMT", nil];
+    
+    for(NSString *eachTimename in availTimeZones)
+    {
+        if(![blackList containsObject:eachTimename])
+        {
+            NSTimeZone *currentTimeZone =[NSTimeZone timeZoneWithName:eachTimename];
+            
+            NSInteger currentGMTOffset = [currentTimeZone secondsFromGMT];
+            
+            NSTimeZone *utcTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+            
+            NSInteger gmtOffset = [utcTimeZone secondsFromGMT];
+            
+            int gmtInterval = currentGMTOffset - gmtOffset;
+            
+            NSMutableDictionary *dict=[[NSMutableDictionary alloc]initWithObjects:[NSArray arrayWithObjects:eachTimename,[NSNumber numberWithInt:gmtInterval], nil] forKeys:[NSArray arrayWithObjects:@"tname",@"offset", nil]];
+            
+            [unsortTimeZones addObject:dict];
+        }
+        else
+        {
+            NSLog(@"Skipped one : %@",eachTimename);
+            continue;
+        }
+    }
+    
+    
+    NSSortDescriptor *descriptor2 = [[NSSortDescriptor alloc] initWithKey:@"offset"  ascending:YES];
+    timeZonesDicts=(NSMutableArray *)[unsortTimeZones sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor2,nil]];
     
     NSTimeZone *tZone = [NSTimeZone localTimeZone];
-    timeZone=[tZone name];
+    NSString *timeZoneName=[tZone name];
     NSInteger currentGMTOffset = [tZone secondsFromGMT];
+    
+    
+    NSTimeZone *utcTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    
+    NSInteger gmtOffset = [utcTimeZone secondsFromGMT];
+    
+    int gmtInterval = currentGMTOffset - gmtOffset;
+    
+    timeZone=[[NSMutableDictionary alloc]initWithObjects:[NSArray arrayWithObjects:timeZoneName,[NSNumber numberWithInt:gmtInterval], nil] forKeys:[NSArray arrayWithObjects:@"tname",@"offset", nil]];
+    
+    
     
     NSString *operator;
     
-    if(currentGMTOffset>=0)
+    if(gmtInterval>=0)
         operator=@"+";
     else
     {
         operator=@"-";
-        currentGMTOffset=-1*currentGMTOffset;
+        gmtInterval=-1*gmtInterval;
     }
     
-    int hours = floor(currentGMTOffset/(60*60));
-    int minutes = round(floor((currentGMTOffset - hours * 60 * 60)/60));
+    int hours = floor(gmtInterval/(60*60));
+    int minutes = round(floor((gmtInterval - hours * 60 * 60)/60));
     
-    [self.timeZoneBtn setTitle:[NSString stringWithFormat:@"%@ GMT %@ %02d:%02d",timeZone,operator,hours,minutes] forState:UIControlStateNormal];
+    
+    
+   [self.timeZoneBtn setTitle:[NSString stringWithFormat:@"%@ %02d:%02d %@",operator,hours,minutes,[timeZone objectForKey:@"tname"]] forState:UIControlStateNormal];
     
     self.timeZoneBtn.titleLabel.minimumScaleFactor=0.2f;
     self.timeZoneBtn.titleLabel.adjustsFontSizeToFitWidth=YES;
@@ -101,63 +166,89 @@
 }
 
 - (IBAction)facebookClicked:(id)sender {
-    SLComposeViewController *tweetSheet = [SLComposeViewController
-                                           composeViewControllerForServiceType:SLServiceTypeFacebook];
     
-    SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result) {
-        switch (result)
-        {
-            case SLComposeViewControllerResultCancelled:
-                //NSLog(@"Twitter Result: canceled");
-                break;
-            case SLComposeViewControllerResultDone:
-                //NSLog(@"Twitter Result: sent");
-                break;
-            default:
-                //NSLog(@"Twitter Result: default");
-                break;
+    NSString *localPath=[CacheDirectory stringByAppendingPathComponent:@"screenImage.png"];
+    
+    if([[NSFileManager defaultManager] fileExistsAtPath:localPath])
+    {
+        if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+            SLComposeViewController * fbSheetOBJ = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+            
+            //[fbSheetOBJ setInitialText:@"Post from my iOS application"];
+            //[fbSheetOBJ addURL:[NSURL URLWithString:@"http://www.weblineindia.com"]];
+            [fbSheetOBJ addImage:[UIImage imageWithContentsOfFile:localPath]];
+            
+            [self presentViewController:fbSheetOBJ animated:YES completion:Nil];
         }
+    }
+    else
+    {
+        UIAlertView *alert= [[UIAlertView alloc] initWithTitle:@"Sorry!" message:@"No Image found to share" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         
-        [self dismissViewControllerAnimated:YES completion:^{}];
-    };
-
-    [tweetSheet setInitialText:@"Great fun to learn iOS programming at appcoda.com!"];
-    [tweetSheet addImage:[UIImage imageNamed:@"toshare"]];
-    [self presentViewController:tweetSheet animated:YES completion:nil];
+        [alert show];
+    }
+    
+    
 }
 
 - (IBAction)twitterClicked:(id)sender {
     
-    SLComposeViewController *tweetSheet = [SLComposeViewController
-                                           composeViewControllerForServiceType:SLServiceTypeTwitter];
-    SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
-        switch (result)
-        {
-            case SLComposeViewControllerResultCancelled:
-                //NSLog(@"Twitter Result: canceled");
-                break;
-            case SLComposeViewControllerResultDone:
-                //NSLog(@"Twitter Result: sent");
-                break;
-            default:
-                //NSLog(@"Twitter Result: default");
-                break;
-        }
+    NSString *localPath=[CacheDirectory stringByAppendingPathComponent:@"screenImage.png"];
+    
+    if([[NSFileManager defaultManager] fileExistsAtPath:localPath])
+    {
+        SLComposeViewController *tweetSheet = [SLComposeViewController
+                                               composeViewControllerForServiceType:SLServiceTypeTwitter];
+        SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
+            switch (result)
+            {
+                case SLComposeViewControllerResultCancelled:
+                    //NSLog(@"Twitter Result: canceled");
+                    break;
+                case SLComposeViewControllerResultDone:
+                    //NSLog(@"Twitter Result: sent");
+                    break;
+                default:
+                    //NSLog(@"Twitter Result: default");
+                    break;
+            }
+            
+            [self dismissViewControllerAnimated:YES completion:^{}];
+        };
+        //[tweetSheet setInitialText:@"Great fun to learn iOS programming at appcoda.com!"];
+        [tweetSheet addImage:[UIImage imageWithContentsOfFile:localPath]];
+        [self presentViewController:tweetSheet animated:YES completion:nil];
+    }
+    else
+    {
+        UIAlertView *alert= [[UIAlertView alloc] initWithTitle:@"Sorry!" message:@"No Image found to share" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         
-        [self dismissViewControllerAnimated:YES completion:^{}];
-    };
-    [tweetSheet setInitialText:@"Great fun to learn iOS programming at appcoda.com!"];
-    [tweetSheet addImage:[UIImage imageNamed:@"toshare"]];
-    [self presentViewController:tweetSheet animated:YES completion:nil];
+        [alert show];
+    }
+   
 }
 
 - (IBAction)instagramClicked:(id)sender {
+    NSString *localPath=[CacheDirectory stringByAppendingPathComponent:@"screenImage.png"];
     
-    UIImage *image = [UIImage imageNamed:@"toshare"];
-    if ([MGInstagram isAppInstalled])
-        [MGInstagram postImage:image withCaption:@"Manifest your every desire using “MindCloud”, that masterminds the world’s dreams in the palm of your hand!!" inView:self.view];
+    if([[NSFileManager defaultManager] fileExistsAtPath:localPath])
+    {
+        UIImage *image = [UIImage imageWithContentsOfFile:localPath];
+        
+        NSLog(@"Image : %@",image);
+        if ([MGInstagram isAppInstalled])
+            [MGInstagram postImage:image withCaption:@"" inView:self.view];
+        else
+            [self.notInstalledAlert show];
+    }
     else
-        [self.notInstalledAlert show];
+    {
+        UIAlertView *alert= [[UIAlertView alloc] initWithTitle:@"Sorry!" message:@"No Image found to share" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+    
+    
 }
 
 - (UIAlertView*) notInstalledAlert
@@ -179,7 +270,7 @@
         pickerView.backgroundColor=[UIColor colorWithRed:(0.0/255.0) green:(0.0/255.0) blue:(0.0/255.0) alpha:0.5f];
         
         
-        NSUInteger currentIndex = [timeZonesNames indexOfObject:timeZone];
+        NSUInteger currentIndex = [timeZonesDicts indexOfObject:timeZone];
         
         [pickerView selectRow:currentIndex inComponent:0 animated:NO];
         
@@ -229,7 +320,7 @@
 
 {
     //NSLog(@"returned count : %d",shpList.count);
-    return timeZonesNames.count;
+    return timeZonesDicts.count;
 }
 
 
@@ -248,26 +339,37 @@
         tView.adjustsFontSizeToFitWidth=YES;
     }
     // Fill the label text here
-    NSTimeZone *currentTimeZone =[NSTimeZone timeZoneWithName:[timeZonesNames objectAtIndex:row]];
+//    NSTimeZone *currentTimeZone =[NSTimeZone timeZoneWithName:[timeZonesNames objectAtIndex:row]];
+//    
+//    NSInteger currentGMTOffset = [currentTimeZone secondsFromGMT];
+//    
+//    NSTimeZone *utcTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+//    
+//    NSInteger gmtOffset = [utcTimeZone secondsFromGMT];
+//    
+//    NSTimeInterval gmtInterval = currentGMTOffset - gmtOffset;
     
-    NSInteger currentGMTOffset = [currentTimeZone secondsFromGMT];
+    
+    NSDictionary *dict = [timeZonesDicts objectAtIndex:row];
+    
+    int gmtInterval = [[dict objectForKey:@"offset"] intValue];
     
     NSString *operator;
     
-    if(currentGMTOffset>=0)
+    if(gmtInterval>=0)
         operator=@"+";
     else
     {
         operator=@"-";
-        currentGMTOffset=-1*currentGMTOffset;
+        gmtInterval=-1*gmtInterval;
     }
     
-    int hours = floor(currentGMTOffset/(60*60));
-    int minutes = round(floor((currentGMTOffset - hours * 60 * 60)/60));
+    int hours = floor(gmtInterval/(60*60));
+    int minutes = round(floor((gmtInterval - hours * 60 * 60)/60));
     
     
     
-    NSString *title = [NSString stringWithFormat:@"%@ GMT %@ %02d:%02d",[timeZonesNames objectAtIndex:row],operator,hours,minutes];
+    NSString *title = [NSString stringWithFormat:@"%@ %02d:%02d %@",operator,hours,minutes,[dict objectForKey:@"tname"]];
     tView.text=title;
     
     return tView;
@@ -277,27 +379,26 @@
 - (void) pickerView:(UIPickerView *)pickerViewcu didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 
 {
-    timeZone=[timeZonesNames objectAtIndex:row];
+    timeZone=[timeZonesDicts objectAtIndex:row];
     
-    NSTimeZone *currentTimeZone =[NSTimeZone timeZoneWithName:timeZone];
-    
-    NSInteger currentGMTOffset = [currentTimeZone secondsFromGMT];
+    int gmtInterval = [[timeZone objectForKey:@"offset"] intValue];
     
     NSString *operator;
     
-    if(currentGMTOffset>=0)
+    if(gmtInterval>=0)
         operator=@"+";
     else
     {
         operator=@"-";
-        currentGMTOffset=-1*currentGMTOffset;
+        gmtInterval=-1*gmtInterval;
     }
-    int hours = floor(currentGMTOffset/(60*60));
-    int minutes = round(floor((currentGMTOffset - hours * 60 * 60)/60));
+    
+    int hours = floor(gmtInterval/(60*60));
+    int minutes = round(floor((gmtInterval - hours * 60 * 60)/60));
     
     
     
-    [self.timeZoneBtn setTitle:[NSString stringWithFormat:@"%@ GMT %@ %02d:%02d",timeZone,operator,hours,minutes] forState:UIControlStateNormal];
+    [self.timeZoneBtn setTitle:[NSString stringWithFormat:@"%@ %02d:%02d %@",operator,hours,minutes,[timeZone objectForKey:@"tname"]] forState:UIControlStateNormal];
     
     [pickerView removeFromSuperview];
     pickerView=nil;
@@ -351,11 +452,6 @@
     cell.textLabel.text=[tDict objectForKey:@"name"];
     
     
-    
-   
-    
-    
-    
     return cell;
 }
 
@@ -369,10 +465,14 @@
     
     NSDictionary *tDict=[teamsArray objectAtIndex:indexPath.row];
     
-    NSString *tZoneEdited=[timeZone stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+    NSString *tZoneEdited=[[timeZone objectForKey:@"tname"] stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
     
-    NSString *urlStr = [NSString stringWithFormat:@"http://hooznext.karakasstaging.be//wallpaper/android/%@/small/%@",[tDict objectForKey:@"tid"],tZoneEdited];
+    int wid = (int)maxWidth*screenScale;
+    int ht = (int)maxHeight*screenScale;
     
+    NSString *urlStr = [NSString stringWithFormat:@"http://hooznext.karakasstaging.be//wallpaper/android/%@/%d_%d/%@",[tDict objectForKey:@"tid"],wid,ht,tZoneEdited];
+    
+    NSLog(@"URL : %@",urlStr);
     
     
     HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -381,14 +481,18 @@
     [self downloadImageWithURL:[NSURL URLWithString:urlStr] completionBlock:^(BOOL succeeded, UIImage *image) {
         if (succeeded) {
 
-            
-            
+        
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             
+            [self saveImage:image withFileName:@"screenImage.png" ofType:@"png"];
             
             [HUD hide:YES];
             
-            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Your image is ready" message:@"Please go to settings and set the image as lock screen wallpaper\nSettings -> Wallpapers & Brightness" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Your image is ready" message:@"Please go to settings and set the image as lock screen wallpaper\nSettings -> Wallpapers & Brightness" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//            
+//            [alert show];
+            
+            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Your image is ready" message:@"Image saved to gallery, please set the image as lock screen wallpaper" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             
             [alert show];
            
@@ -410,13 +514,28 @@
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                if ( !error )
                                {
+        
                                    UIImage *image=[[UIImage alloc] initWithData:data];
-                                   
+
                                    completionBlock(YES,image);
                                } else{
                                    completionBlock(NO,nil);
                                }
                            }];
+}
+
+-(void) saveImage:(UIImage *)image withFileName:(NSString *)imageName ofType:(NSString *)extension {
+    
+    NSLog(@"save image to : %@, extension : %@",imageName,extension) ;
+    
+    if ([[extension lowercaseString] isEqualToString:@"png"]) {
+        [UIImagePNGRepresentation(image) writeToFile:[CacheDirectory stringByAppendingPathComponent:imageName]  options:NSAtomicWrite error:nil];
+    } else if ([[extension lowercaseString] isEqualToString:@"jpg"] || [[extension lowercaseString] isEqualToString:@"jpeg"]) {
+        [UIImageJPEGRepresentation(image, 1.0) writeToFile:[CacheDirectory stringByAppendingPathComponent:imageName] options:NSAtomicWrite error:nil];
+    } else {
+        NSLog(@"Image Save Failed\nExtension: (%@) is not recognized, use (PNG/JPG)", extension);
+    }
+    
 }
 
 
